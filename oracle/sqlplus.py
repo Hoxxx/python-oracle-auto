@@ -1,3 +1,7 @@
+'''
+通过 Python 与 SQL*Plus 进程通信
+'''
+
 import os
 from subprocess import Popen, PIPE
 
