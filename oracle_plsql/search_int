@@ -1,0 +1,24 @@
+declare
+CURSOR cur_query IS
+  select table_name, column_name, data_type from user_tab_columns where (table_name like 'T\_%' escape '\' or table_name like 'CT%') AND TABLE_NAME <>'T_EIP_oy0AAABJaRKeCejJ';
+  a number;
+  sql_hard varchar2(2000);
+  vv number;
+begin
+  for rec1 in cur_query loop
+  a:=0;
+  if rec1.data_type ='VARCHAR2'  THEN
+  a := 1;
+  end if;
+  if a>0 then
+  sql_hard := '';
+  sql_hard := 'SELECT count(*) FROM  '|| rec1.table_name ||' where '
+  ||rec1.column_name|| ' in (select fid from T_FDC_CURPROJECT)' ;
+  --dbms_output.put_line(sql_hard); 
+  execute immediate sql_hard INTO vv;
+   IF vv > 0 THEN
+   dbms_output.put_line(rec1.table_name||'--'||rec1.column_name);
+   end if; 
+  END IF;
+  end loop;
+end;
